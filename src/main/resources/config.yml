@@ -1,0 +1,151 @@
+# ============================================================
+#  AIBot - pemain bot palsu + AI chat untuk server Minecraft
+#  Butuh ProtocolLib 5.x agar bot tampil di Server List & Tab List
+#  (tanpa ProtocolLib: bot hanya aktif di chat + pesan join/leave)
+# ============================================================
+
+bots:
+  # daftar nama bot
+  names:
+    - ShadowHunter
+    - TitanForge
+    - ZenithGamer
+    - PixelKnight
+    - StarGazer
+    - LunarDrifter
+    - SilverArrow
+    - CyberWolf
+    - ThunderBolt
+    - HyperPulse
+    - FrostByte
+    - RaptorClaw
+    - NightCrawler
+    - VortexRider
+    - BlazeStriker
+    - EchoBlaze
+    - SolarFlare
+    - CrystalOlou
+    - AquaFlame
+    - FrostKnight
+  # jumlah bot online (berubah-ubah di antara min & max)
+  min-online: 8
+  max-online: 18
+  # tiap berapa detik bot bisa join/leave (acak antara min-max)
+  fluctuate-seconds: { min: 60, max: 240 }
+  announce-join-leave: true
+  join-message: "&e%name% joined the game"
+  leave-message: "&e%name% left the game"
+
+server-list:
+  # tambahkan bot ke jumlah pemain di Multiplayer menu
+  enabled: true
+  # 0 = pakai max-players asli server
+  max-players: 0
+  # tampilkan hingga 12 nama di tooltip (nama bot + pemain asli)
+  show-sample: true
+
+tab-list:
+  enabled: true
+  ping: { min: 20, max: 160 }
+
+chat:
+  format: "<%name%> %message%"
+  # bot ngobrol sendiri tiap beberapa detik
+  ambient:
+    enabled: true
+    seconds: { min: 25, max: 90 }
+    mention-chance: 0.35      # peluang saling mention (@Nama)
+    reply-chance: 0.45        # peluang bot lain menyahut
+  # bot membalas pemain asli
+  respond:
+    enabled: true
+    chance: 0.85              # peluang membalas tiap chat pemain
+    always-when-mentioned: true
+    delay-seconds: { min: 1, max: 4 }
+    max-per-minute: 6
+  # kata yang dicari -> balasan (huruf kecil)
+  keyword-replies:
+    - match: [halo, hai, hi, hello, haloo, helo, p]
+      replies:
+        - "halo juga bro!"
+        - "yo halo gess!"
+        - "oi %player% halo"
+        - "haii %player%, baru on ya?"
+    - match: [plugin, harga, beli, jual]
+      replies:
+        - "wah plugin apaan tuh %player%?"
+        - "gua juga penasaran sih sama harganya"
+        - "tanya admin aja bro"
+    - match: [help, tolong, bantu, gimana]
+      replies:
+        - "kenapa %player%? sini gua bantuin"
+        - "coba tanya di chat aja bro, pasti ada yg tau"
+    - match: [diamond, mining, tambang]
+      replies:
+        - "gua tadi nemu diamond di y -58 bro"
+        - "mining yuk bareng %player%"
+    - match: [wkwk, haha, lol, wkwkwk]
+      replies:
+        - "wkwkwk"
+        - "anjir ngakak"
+        - "lah kocak"
+  fallback-replies:
+    - "iya bro"
+    - "bener juga sih"
+    - "hmm gua kurang paham tapi oke"
+    - "mantap %player%"
+    - "wkwk iya juga"
+    - "lanjut bro"
+  ambient-lines:
+    - "Gw mau mining dulu nih, kalau nemu diamond langsung teriak hehe"
+    - "ada yang mau trade ga? gua punya banyak iron"
+    - "laper banget dari tadi belom nemu sapi wkwk"
+    - "base gua udah hampir jadi nih"
+    - "siapa yang tadi bunuh gua pas lagi afk wkwk"
+    - "ada yang tau cara bikin farm otomatis?"
+    - "malem2 gini enaknya build"
+    - "baru dapet netherite akhirnya!!"
+    - "creeper sialan ngancurin rumah gua"
+    - "gas ke end ga nih?"
+    - "server lagi rame ya hari ini"
+    - "yang punya roti bagi dong"
+    - "tadi ada yg liat enderman ga di sekitar spawn?"
+    - "gw lagi bikin farm iron, tinggal hopper"
+  mention-lines:
+    - "@%target% laper banget daritadi belom nemu sapi wkwk"
+    - "@%target% lu lagi dimana bro?"
+    - "@%target% mau ikut mining ga?"
+    - "@%target% minjem pickaxe dong"
+    - "@%target% udah online dari tadi ya?"
+  reply-lines:
+    - "ke base gua aja bro banyak roti di dalem barrel"
+    - "gas bro, gua otw"
+    - "wkwkwk bener banget"
+    - "boleh, tunggu bentar ya"
+    - "lagi di nether nih bro"
+    - "sama gua juga ngerasa gitu"
+    - "nanti gua kasih coordinates nya"
+
+# ------------------------------------------------------------
+#  AI: balasan chat dibuat oleh model bahasa (opsional).
+#  provider: "anthropic" atau "openai" (OpenAI-compatible: OpenAI, OpenRouter, Groq, Ollama, dll)
+# ------------------------------------------------------------
+ai:
+  enabled: false
+  provider: anthropic
+  # bisa juga lewat environment variable AIBOT_API_KEY
+  api-key: ""
+  model: claude-haiku-5-5
+  # untuk provider openai-compatible, contoh: https://api.openai.com/v1/chat/completions
+  endpoint: ""
+  max-tokens: 80
+  timeout-seconds: 15
+  history-lines: 10
+  # AI juga dipakai untuk obrolan antar-bot (lebih boros token)
+  ambient: false
+  max-length: 100
+  system-prompt: >
+    Kamu adalah pemain Minecraft bernama %bot% di server survival Indonesia.
+    Balas chat dengan santai, bahasa Indonesia gaul, 1 kalimat pendek (di bawah 80 karakter),
+    tanpa emoji, tanpa tanda kutip, jangan awali dengan nama kamu, jangan pernah mengaku AI atau bot.
+    Kalau relevan, boleh mention pemain dengan @nama.

@@ -1,0 +1,15 @@
+name: AIBot
+main: id.aibot.AIBotPlugin
+version: ${project.version}
+author: AIBot
+description: Pemain bot AI di dalam server - muncul di server list, tab list, dan chat.
+# api-version sengaja tidak diisi agar plugin jalan di 1.8 - 1.21+
+softdepend: [ProtocolLib]
+commands:
+  aibot:
+    description: Kelola AI bot
+    usage: /aibot <list|reload|join|leave|say|count>
+    permission: aibot.admin
+permissions:
+  aibot.admin:
+    default: op
